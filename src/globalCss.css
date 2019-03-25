@@ -1,0 +1,12 @@
+.pointer {
+    cursor: pointer;
+}
+
+.break-line {
+    white-space: pre-wrap;
+}
+
+.container-overflow {
+  overflow-y: auto;
+  max-height: 300px;
+}
