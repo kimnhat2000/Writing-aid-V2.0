@@ -2,27 +2,27 @@ export const menuDropdownItems =
   [
     {
       key: 'responses',
-      text: 'responses',
-      value: 'responses',
+      text: 'Responses',
+      value: 1,
       icon: 'send',
     },
     
     {
-      key: 'Drafts',
+      key: 'drafts',
       text: 'Drafts',
-      value: 'Drafts',
+      value: 2,
       icon: 'firstdraft',
     },
     {
-      key: 'all sent responses',
-      text: 'all sent responses',
-      value: 'all sent responses',
+      key: 'sentResponses',
+      text: 'Sent responses',
+      value: 3,
       icon: 'sign language',
     },
     {
       key: 'statistic',
-      text: 'statistic',
-      value: 'statistic',
+      text: 'Statistic',
+      value: 4,
       icon: 'star',
     }, 
   ]
