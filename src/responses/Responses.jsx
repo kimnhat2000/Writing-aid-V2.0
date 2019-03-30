@@ -48,48 +48,50 @@ const Responses = ({
           </span>
         </Header>
       </Segment>
-
-      <Segment>
-        {title.possibleAnswers.map((answer, index) => (
-          <Container key={index}>
-            <div
-              onClick={() =>
-                selectedOption({
-                  selectedTitleId: title.id,
-                  SelectedOptionId: answer.id,
-                })
-              }
-            >
-              {index + 1} - {answer.option}
-            </div>
-            {answer.selected && (
-              <div>
-                <Button.Group basic size="mini">
-                  <Popup
-                    trigger={
-                      <Button
-                        icon={answer.copy ? "check" : "copy outline"}
-                        onClick={() =>
-                          copyClick(answer.option, title.id, answer.id)
+      {!title.collapse &&
+            <Segment>
+            {title.possibleAnswers.map((answer, index) => (
+              <Container key={index}>
+                <div
+                  onClick={() =>
+                    selectedOption({
+                      selectedTitleId: title.id,
+                      SelectedOptionId: answer.id,
+                    })
+                  }
+                >
+                  {index + 1} - {answer.option}
+                </div>
+                {answer.selected && (
+                  <div>
+                    <Button.Group basic size="mini">
+                      <Popup
+                        trigger={
+                          <Button
+                            icon={answer.copy ? "check" : "copy outline"}
+                            onClick={() =>
+                              copyClick(answer.option, title.id, answer.id)
+                            }
+                          />
                         }
+                        content={answer.copy ? "Copied" : "Click to Copy"}
                       />
-                    }
-                    content={answer.copy ? "Copied" : "Click to Copy"}
-                  />
-                  <Popup
-                    trigger={<Button icon="edit outline" />}
-                    content="Edit"
-                  />
-                  <Popup trigger={<Button icon="remove" />} content="Delete" />
-                </Button.Group>
-              </div>
-            )}
-            {title.possibleAnswers.length - 2 >= index && (
-              <Divider horizontal>Or</Divider>
-            )}
-          </Container>
-        ))}
-      </Segment>
+                      <Popup
+                        trigger={<Button icon="edit outline" />}
+                        content="Edit"
+                      />
+                      <Popup trigger={<Button icon="remove" />} content="Delete" />
+                    </Button.Group>
+                  </div>
+                )}
+                {title.possibleAnswers.length - 2 >= index && (
+                  <Divider horizontal>Or</Divider>
+                )}
+              </Container>
+            ))}
+          </Segment>
+      }
+
     </Segment.Group>
   ));
 };
