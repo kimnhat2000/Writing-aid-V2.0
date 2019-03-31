@@ -1,13 +1,15 @@
-import React from "react";
-import { Dropdown, Container } from "semantic-ui-react";
-import {menuDropdownItems} from '../tools.js'
+import React from 'react'
+import { Dropdown, Container } from 'semantic-ui-react'
+import { menuDropdownItems, responsesDropdown } from '../tools.js'
 
-const MenuDropdown = ({ switchMenu, text }) => {
+import ResponseDropdown from './ResponseDropdown'
+
+const MenuDropdown = ({ switchMenu, dropdownItem, openForm, responseFormState }) => {
   return (
-    <Container className="pointer">
-      <Dropdown icon="list">
+    <Container className='pointer'>
+      <Dropdown icon='list'>
         <Dropdown.Menu>
-          <Dropdown.Header content="Writing add options" />
+          <Dropdown.Header content='Writing add options' />
           {menuDropdownItems.map(item => (
             <Dropdown.Item
               key={item.key}
@@ -17,9 +19,18 @@ const MenuDropdown = ({ switchMenu, text }) => {
           ))}
         </Dropdown.Menu>
       </Dropdown>
-      {text}
-    </Container>
-  );
-};
 
-export default MenuDropdown;
+      {dropdownItem.value === 1 && (
+        <ResponseDropdown
+          title={dropdownItem.text}
+          dropdown={responsesDropdown}
+          icon='send'
+          openForm={openForm}
+          responseFormState={responseFormState}
+        />
+      )}
+    </Container>
+  )
+}
+
+export default MenuDropdown

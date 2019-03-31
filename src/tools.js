@@ -74,16 +74,36 @@ export const menuDropdownItems = [
 
 export const titleDropdown = [
   {
-    key: 'editTitle',
-    text: 'Edit this title',
+    key: 'addOption',
+    text: 'add option to this title',
     value: 1,
-    icon: 'edit outline'
+    icon: 'add'
   },
-
   {
     key: 'deleteTitle',
     text: 'Delete this title',
     value: 2,
     icon: 'delete'
   }
+]
+
+export const responsesDropdown = [
+  {
+    key: 'addTitle',
+    text: 'Add a title',
+    value: 1,
+    icon: 'add'
+  },
+  {
+    key: 'expandTitles',
+    text: 'Expand all topics',
+    value: 2,
+    icon: 'sort amount down'
+  },
+  {
+    key: 'collapseTitles',
+    text: 'Collapse all topics',
+    value: 3,
+    icon: 'sort amount down'
+  },
 ]

@@ -1,22 +1,24 @@
-import React from "react";
+import React from 'react'
 import {
   Header,
   Container,
   Divider,
   Grid,
   Segment,
-  TextArea,
-} from "semantic-ui-react";
-import { connect } from "react-redux";
+  TextArea
+} from 'semantic-ui-react'
+import { connect } from 'react-redux'
 
-import AppHeader from './appHeader/AppHeader';
-import MenuDropdown from "./dropdown/menuDropdown";
-import Responses from "./responses/Responses";
-import Drafts from "./drafts/Drafts";
-import SentResponses from "./sentResponses/SentResponses";
-import Statistic from "./statistics/Statistics";
+import AppHeader from './appHeader/AppHeader'
+import MenuDropdown from './dropdown/menuDropdown'
+import Responses from './responses/Responses'
+import Drafts from './drafts/Drafts'
+import SentResponses from './sentResponses/SentResponses'
+import Statistic from './statistics/Statistics'
 
-import {quotes} from './tools'
+import ResponseForm from './forms/ResponseForm'
+
+import { quotes } from './tools'
 
 const MainApp = ({
   mainMenuDropdown,
@@ -25,25 +27,29 @@ const MainApp = ({
   selectedTitle,
   selectedOption,
   switchMenu,
-  copyOption
+  copyOption,
+  addTitle,
+  // response form props
+  responseFormControl,
+  responseFormState
 }) => {
-  const { value } = mainMenuDropdown;
-  const style = { height: 300, overflowY: "scroll" };
+  const { value } = mainMenuDropdown
+  const style = { height: 300, overflowY: 'auto' }
   return (
     <Container>
-<AppHeader
-quotes={quotes}
-/>
+      <AppHeader quotes={quotes} />
       <Divider />
 
       <Container>
-        <Grid columns="equal">
+        <Grid columns='equal'>
           <Grid.Column>
             <Container width={6}>
-              <Header as="h3" attached="top">
+              <Header as='h3' attached='top'>
                 <MenuDropdown
-                  text={mainMenuDropdown.text}
+                  dropdownItem={mainMenuDropdown}
                   switchMenu={switchMenu}
+                  openForm={status => responseFormControl(status)}
+                  responseFormState={responseFormState}
                 />
               </Header>
               <Container style={style}>
@@ -55,6 +61,7 @@ quotes={quotes}
                     copyOption={copyOption}
                   />
                 )}
+
                 {value === 2 && <Drafts />}
                 {value === 3 && <SentResponses />}
                 {value === 4 && <Statistic />}
@@ -65,30 +72,50 @@ quotes={quotes}
               <TextArea />
             </Segment>
           </Grid.Column>
+
           <Grid.Column width={10}>
             <Segment>
-              <TextArea />
+              {responseFormState.openForm ? (
+                <ResponseForm
+                  responseFormState={responseFormState}
+                  formControl={status => responseFormControl(status)}
+                  responsesState={responsesState}
+                  addTitle={title => addTitle(title)}
+                />
+              ) : (
+                <textarea />
+              )}
             </Segment>
           </Grid.Column>
         </Grid>
       </Container>
     </Container>
-  );
-};
+  )
+}
 
-const stateToProps = ({ mainMenuDropdown, responsesReducer }) => ({
+const stateToProps = ({
+  mainMenuDropdown,
+  responsesReducer,
+  responseFormReducer
+}) => ({
   mainMenuDropdown,
   responsesState: responsesReducer,
-});
+  responseFormState: responseFormReducer
+})
 
 const dispatchToProps = dispatch => ({
-  switchMenu: menu => dispatch({ type: "MENU_CHANGE", menu }),
-  selectedTitle: titleId => dispatch({ type: "SELECTED_TITLE", titleId }),
-  selectedOption: action => dispatch({ type: "SELECTED_OPTION", ...action }),
-  copyOption: action => dispatch({type:'COPY_OPTION', ...action})
-});
+  switchMenu: menu => dispatch({ type: 'MENU_CHANGE', menu }),
+  // responses
+  selectedTitle: titleId => dispatch({ type: 'SELECTED_TITLE', titleId }),
+  selectedOption: action => dispatch({ type: 'SELECTED_OPTION', ...action }),
+  copyOption: action => dispatch({ type: 'COPY_OPTION', ...action }),
+  // response form control
+  responseFormControl: action =>
+    dispatch({ type: 'FORM_STATE_CONTROL', ...action }),
+  addTitle: newTitle => dispatch({ type: 'ADD_TITLE', newTitle })
+})
 
 export default connect(
   stateToProps,
   dispatchToProps
-)(MainApp);
+)(MainApp)

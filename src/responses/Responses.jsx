@@ -29,6 +29,7 @@ const Responses = ({
     <Segment.Group className="pointer" key={index}>
       <Segment>
         <Header as="h4">
+
           <Dropdown icon="pencil alternate">
             <Dropdown.Menu>
               <Dropdown.Header icon="key" content="Title option" />
@@ -40,12 +41,13 @@ const Responses = ({
                 onClick={()=>console.log(item.text)}
               />
               ))}
-
             </Dropdown.Menu>
-          </Dropdown>
+          </Dropdown>   
+                
           <span onClick={() => selectedTitle(title.id)}>
             {title.title} {index + 1} / {responsesState.responsesData.length}
           </span>
+
         </Header>
       </Segment>
       {!title.collapse &&

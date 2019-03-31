@@ -9,7 +9,7 @@ const responsesDefaultData = {
       possibleMatch: 'Et est duis adipisicing sint non elit est Lorem commodo.',
       createdBy: 'abc',
       icon: '',
-      imageD: '',
+      image: '',
       possibleAnswers: [
         {
           option:
@@ -151,13 +151,14 @@ const responsesDefaultData = {
 export const responsesReducer = (state = responsesDefaultData, action) => {
   switch (action.type) {
     case 'SELECTED_TITLE':
-      const clickOnTitle =
-        state.responsesData &&
-        {...state, responsesData: state.responsesData.map(title =>
+      const clickOnTitle = state.responsesData && {
+        ...state,
+        responsesData: state.responsesData.map(title =>
           title.id === action.titleId
             ? { ...title, collapse: !title.collapse }
             : { ...title, collapse: true }
-        )}
+        )
+      }
       return { ...clickOnTitle, selectedTitleId: action.titleId }
     case 'SELECTED_OPTION':
       const newstate = {
@@ -193,6 +194,13 @@ export const responsesReducer = (state = responsesDefaultData, action) => {
         )
       }
       return { ...copystate }
+    case 'ADD_TITLE':
+      const newTitle = {
+        ...state,
+        responsesData: [action.newTitle, ...state.responsesData]
+      }
+      return newTitle
+
     default:
       return state
   }
