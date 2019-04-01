@@ -1,88 +1,121 @@
 import React from 'react'
 import uuid from 'uuid'
 
-import { Form, Input, Button } from 'semantic-ui-react'
+import { Form, Input, Button, Container, Icon } from 'semantic-ui-react'
 
-const ResponseForm = ({ formControl, responseFormState, responsesState, addTitle }) => {
-  const { SelectedOptionId } = responsesState
-  const {title, content, alternative} = responseFormState
-
-  const onFormSubmit = e => {
-    e.preventDefault()
-    if (responseFormState.cancelSubmitClick) {
-      formControl({ openForm: false, cancelSubmitClick: false })
-    } else if (!SelectedOptionId) {
-      const answer = {...option, option: content}
-      const newTitle = {...emptyTitle, title, possibleMatch: alternative, possibleAnswers: [...emptyTitle.possibleAnswers, answer]}
-      addTitle(newTitle)
-    } 
+class ResponseForm extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      title: '',
+      possibleMatch: '',
+      option: '',
+      warning: '',
+      showField: false
+    }
   }
 
-  return (
-    <Form onSubmit={onFormSubmit}>
-      <Form.Field
-        label='Title'
-        placeholder='Title...'
-        control={Input}
-        value={title}
-        onChange={e => formControl({ title: e.target.value })}
-      />
+  onFormChange = e => {
+    this.setState({ [e.target.name]: e.target.value })
+  }
 
-      <Form.TextArea
-        label='Alternative search terms'
-        placeholder='Search terms...'
-        style={{ height: 50, overflowY: 'auto' }}
-        value={alternative}
-        onChange={e => formControl({ alternative: e.target.value })}
-      />
+  onFormsubmit = e => {
+    const {
+      cancelSubmitClick,
+      newOption,
+      newTitle
+    } = this.props.responseFormState
+    const { selectedTitleId, SelectedOptionId } = this.props.responsesState
+    const { formControl, addTitle, responsesState } = this.props
+    const { title, possibleMatch, option } = this.state
+    e.preventDefault()
+    if (cancelSubmitClick) {
+      formControl({ openForm: false, cancelSubmitClick: false })
+    } else if (!SelectedOptionId) {
+      const titleToAdd = {
+        ...newTitle,
+        title,
+        id: uuid(),
+        possibleMatch,
+        possibleAnswers: [
+          { ...newOption, option, id: uuid()},
+          ...newTitle.possibleAnswers
+        ]
+      }
+      const checkDuplicate = responsesState.responsesData.map(
+        item => item.title
+      )
+      if (checkDuplicate.includes(title)) {
+        this.setState({ warning: 'This title is already existed' })
+        return;
+      }
+      addTitle(titleToAdd)
+      this.setState({ title: '', option: '', possibleMatch: '', warning: '' })
+    }
+  }
 
-      <Form.TextArea
-        label='Response'
-        placeholder='One way to answer...'
-        style={{ height: 300, overflowY: 'auto' }}
-        value={content}
-        onChange={e => formControl({ content: e.target.value })}
-      />
+  render () {
+    const { formControl } = this.props
+    const { title, possibleMatch, option, showField, warning } = this.state
+    return (
+      <Container>
+        <Form onSubmit={this.onFormsubmit}>
+      {warning && warning}
+          <Form.Field
+            label='Title'
+            placeholder='Title...'
+            name='title'
+            control={Input}
+            value={title}
+            onChange={e => this.onFormChange(e)}
+          />
+          {showField ? (
+            <Container>
+              <Icon
+                name='minus'
+                onClick={() => this.setState({ showField: !showField })}
+              />
+              <Form.TextArea
+                label='Alternative search terms'
+                placeholder='Search terms...'
+                style={{ height: 50, overflowY: 'auto' }}
+                name='possibleMatch'
+                value={possibleMatch}
+                onChange={e => this.onFormChange(e)}
+              />
+            </Container>
+          ) : (
+            <Icon
+              name='plus'
+              onClick={() => this.setState({ showField: !showField })}
+            />
+          )}
+          <Form.TextArea
+            label='Response'
+            placeholder='One way to answer...'
+            style={{ height: 300, overflowY: 'auto' }}
+            name='option'
+            value={option}
+            onChange={e => this.onFormChange(e)}
+          />
 
-      <Button.Group size='mini'>
-        {title && content ? (
-          <Button positive>Submit</Button>
-        ) : (
-          <Button disabled>Submit</Button>
-        )}
-        <Button.Or />
-        <Button
-          onClick={() =>
-            formControl({
-              cancelSubmitClick: !responseFormState.cancelSubmitClick
-            })
-          }
-        >
-          Cancel
-        </Button>
-      </Button.Group>
-    </Form>
-  )
+          <Button.Group size='mini'>
+            {title && option ? (
+              <Button positive>Submit</Button>
+            ) : (
+              <Button disabled>Submit</Button>
+            )}
+
+            <Button.Or />
+
+            <Button onClick={() => formControl({ cancelSubmitClick: true })}>
+              Cancel
+            </Button>
+          </Button.Group>
+        </Form>
+      </Container>
+    )
+  }
 }
 
 export default ResponseForm
-
-const emptyTitle = {
-  title: '',
-  possibleMatch: '',
-  createdBy: '',
-  icon: '',
-  image: '',
-  possibleAnswers: [
-    
-  ],
-  collapse: false,
-  id: uuid()
-}
-const option = {
-  option: '',
-  id: uuid(),
-  selected: false,
-  copy: false,
-  iconClicked: false
-}

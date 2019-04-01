@@ -1,10 +1,23 @@
+
 const formDefaultState = {
   cancelSubmitClick: false,
   openForm: false,
   showAlternative: false,
-  title: '',
-  alternative: '',
-  content: ''
+  newTitle: {
+    title: '',
+    possibleMatch: '',
+    createdBy: '',
+    icon: '',
+    image: '',
+    possibleAnswers: [],
+    collapse: true,
+  },
+  newOption: {
+    option: '',
+    selected: false,
+    copy: false,
+    iconClicked: false
+  }
 }
 
 export const responseFormReducer = (state = formDefaultState, action) => {

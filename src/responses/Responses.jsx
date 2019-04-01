@@ -44,7 +44,7 @@ const Responses = ({
             </Dropdown.Menu>
           </Dropdown>   
                 
-          <span onClick={() => selectedTitle(title.id)}>
+          <span onClick={() => {selectedTitle(title.id)}}>
             {title.title} {index + 1} / {responsesState.responsesData.length}
           </span>
 

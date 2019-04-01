@@ -9,7 +9,7 @@ class AppHeader extends React.PureComponent {
     }
   }
   render () {
-    const { quotes } = this.props
+    const { quotes, test } = this.props
     const randomNum = Math.floor(Math.random() * quotes.length)
     return (
       <Header
@@ -19,7 +19,7 @@ class AppHeader extends React.PureComponent {
           this.setState({ number: randomNum })
         }}
       >
-        <Icon name='cog' loading />
+        <Icon name='cog' loading onClick={test}/>
         <Header.Content>
           CS:GO TEAM
           <Header.Subheader>{quotes[this.state.number]}</Header.Subheader>

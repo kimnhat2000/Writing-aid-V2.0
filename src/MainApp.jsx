@@ -5,7 +5,7 @@ import {
   Divider,
   Grid,
   Segment,
-  TextArea
+  TextArea,
 } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
@@ -17,6 +17,7 @@ import SentResponses from './sentResponses/SentResponses'
 import Statistic from './statistics/Statistics'
 
 import ResponseForm from './forms/ResponseForm'
+
 
 import { quotes } from './tools'
 
@@ -35,9 +36,14 @@ const MainApp = ({
 }) => {
   const { value } = mainMenuDropdown
   const style = { height: 300, overflowY: 'auto' }
+
+  const test = () =>{
+    console.log(responsesState.responsesData.map(item=>item.id))
+  }
+
   return (
     <Container>
-      <AppHeader quotes={quotes} />
+      <AppHeader quotes={quotes} test={test}/>
       <Divider />
 
       <Container>
@@ -74,6 +80,7 @@ const MainApp = ({
           </Grid.Column>
 
           <Grid.Column width={10}>
+
             <Segment>
               {responseFormState.openForm ? (
                 <ResponseForm
@@ -86,6 +93,7 @@ const MainApp = ({
                 <textarea />
               )}
             </Segment>
+
           </Grid.Column>
         </Grid>
       </Container>
