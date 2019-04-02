@@ -3,6 +3,8 @@ import uuid from 'uuid'
 const responsesDefaultData = {
   selectedTitleId: '',
   SelectedOptionId: '',
+  deleteAnswerConfirmShow: false,
+  deleteTitleconfirmClick: false,
   responsesData: [
     {
       title: 'Occaecat sint aliquip tempor laborum.',
@@ -200,6 +202,29 @@ export const responsesReducer = (state = responsesDefaultData, action) => {
         responsesData: [action.newTitle, ...state.responsesData]
       }
       return newTitle
+    case 'DELETE_tITLE':
+      const titles = {
+        ...state,
+        responsesData: state.responsesData.filter(
+          title => title.id !== state.selectedTitleId
+        )
+      }
+      return { ...titles }
+
+    case 'DELETE_OPTION':
+      const options = {
+        ...state,
+        responsesData: state.responsesData.map(title =>
+          title.id === state.selectedTitleId
+            ? {...title, possibleAnswers: title.possibleAnswers.filter(answer =>
+              answer.id !== state.SelectedOptionId)}
+            : title
+        )
+      }
+      return { ...options }
+
+      case 'CONFIRM_CONTROL':
+        return {...state, ...action.confirmControl}
 
     default:
       return state

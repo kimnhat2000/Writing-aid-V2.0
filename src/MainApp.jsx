@@ -30,6 +30,9 @@ const MainApp = ({
   switchMenu,
   copyOption,
   addTitle,
+  deleteTitle,
+  deleteAnswer,
+  confirmControl,
   // response form props
   responseFormControl,
   responseFormState
@@ -65,6 +68,9 @@ const MainApp = ({
                     selectedTitle={selectedTitle}
                     selectedOption={selectedOption}
                     copyOption={copyOption}
+                    deleteTitle={deleteTitle}
+                    deleteAnswer={deleteAnswer}
+                    confirmControl={confirmControl}
                   />
                 )}
 
@@ -117,10 +123,15 @@ const dispatchToProps = dispatch => ({
   selectedTitle: titleId => dispatch({ type: 'SELECTED_TITLE', titleId }),
   selectedOption: action => dispatch({ type: 'SELECTED_OPTION', ...action }),
   copyOption: action => dispatch({ type: 'COPY_OPTION', ...action }),
+  addTitle: newTitle => dispatch({ type: 'ADD_TITLE', newTitle }),
+  deleteTitle: ()=>dispatch({type:'DELETE_tITLE'}),
+  deleteAnswer: ()=>dispatch({type: 'DELETE_OPTION'}),
+  confirmControl: confirmControl=>dispatch({type: 'CONFIRM_CONTROL', confirmControl}),
+
   // response form control
   responseFormControl: action =>
     dispatch({ type: 'FORM_STATE_CONTROL', ...action }),
-  addTitle: newTitle => dispatch({ type: 'ADD_TITLE', newTitle })
+  
 })
 
 export default connect(

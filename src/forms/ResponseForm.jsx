@@ -43,9 +43,9 @@ class ResponseForm extends React.Component {
         ]
       }
       const checkDuplicate = responsesState.responsesData.map(
-        item => item.title
+        item => item.title.toLowerCase()
       )
-      if (checkDuplicate.includes(title)) {
+      if (checkDuplicate.includes(title.toLocaleLowerCase())) {
         this.setState({ warning: 'This title is already existed' })
         return;
       }
